@@ -14,7 +14,7 @@ type Godville struct {
 	token   string
 }
 
-type Info struct {
+type apiInfo struct {
 	Name              string    `json:"name"`
 	Godname           string    `json:"godname"`
 	Gender            string    `json:"gender"`
@@ -54,6 +54,23 @@ type Info struct {
 	Quest         string        `json:"quest"`
 	Aura          string        `json:"aura"`
 	Activatables  []interface{} `json:"activatables"`
+}
+
+type Info struct {
+	Name      string
+	Godname   string
+	Alignment string
+	Clan      string
+	DiaryLast string
+	TownName  string
+
+	Level     int
+	Distance  int
+	Health    int
+	MaxHealth int
+
+	GoldApprox string
+	Quest      string
 }
 
 func New(godname, token string) *Godville {
@@ -97,10 +114,25 @@ func (g *Godville) Info(ctx context.Context) (*Info, error) {
 		return nil, fmt.Errorf("failed to read response body: %w", readErr)
 	}
 
-	var info Info
+	var info apiInfo
 	if err := json.Unmarshal(body, &info); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
 	}
 
-	return &info, nil
+	return &Info{
+		Name:      info.Name,
+		Godname:   info.Godname,
+		Alignment: info.Alignment,
+		Clan:      info.Clan,
+		DiaryLast: info.DiaryLast,
+		TownName:  info.TownName,
+
+		Level:     info.Level,
+		Distance:  info.Distance,
+		Health:    info.Health,
+		MaxHealth: info.MaxHealth,
+
+		GoldApprox: info.GoldApprox,
+		Quest:      info.Quest,
+	}, nil
 }
