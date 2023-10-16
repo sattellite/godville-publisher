@@ -33,6 +33,11 @@ func Load() (*Config, error) {
 		return nil, errors.New("MASTODON_ID and MASTODON_SECRET must be set if MASTODON_SERVER is set")
 	}
 
+	// return error if no publishers are configured
+	if mastodonServer == "" {
+		return nil, errors.New("no publishers are configured")
+	}
+
 	return &Config{
 		GodvilleGodname: godvilleGodname,
 		GodvilleToken:   godvilleToken,
