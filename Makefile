@@ -11,7 +11,7 @@ build: lint test ## Build binary
 	@mkdir -p build
 	go build -ldflags $(BUILDFLAGS) -o build/$(BINARY) $(MAINFILE)
 
-run: ## Run binary
+run: tidy ## Run binary
 	go run cmd/godville/main.go
 
 ### ADDITIONAL COMMANDS ###
@@ -19,8 +19,11 @@ run: ## Run binary
 lint: ## Run linter
 	golangci-lint run
 
-test: ## Run tests
+test: tidy ## Run tests
 	go test -count 1 -race -v ./...
+
+tidy: ## Run go mod tidy
+	go mod tidy -e
 
 # Auto documented Makefile https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:
