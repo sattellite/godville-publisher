@@ -7,6 +7,10 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	"golang.org/x/text/feature/plural"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 type Godville struct {
@@ -63,6 +67,7 @@ type Info struct {
 	Clan      string
 	DiaryLast string
 	TownName  string
+	Location  string
 
 	Level     int
 	Distance  int
@@ -119,6 +124,15 @@ func (g *Godville) Info(ctx context.Context) (*Info, error) {
 		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
 	}
 
+	heroLocation := info.TownName
+	if info.TownName == "" {
+		heroLocation = fmt.Sprintf(
+			"%d %s от столицы",
+			info.Distance,
+			pluralForm(language.Russian, "шаг", "шага", "шагов", info.Distance),
+		)
+	}
+
 	return &Info{
 		Name:      info.Name,
 		Godname:   info.Godname,
@@ -126,6 +140,7 @@ func (g *Godville) Info(ctx context.Context) (*Info, error) {
 		Clan:      info.Clan,
 		DiaryLast: info.DiaryLast,
 		TownName:  info.TownName,
+		Location:  heroLocation,
 
 		Level:     info.Level,
 		Distance:  info.Distance,
@@ -135,4 +150,14 @@ func (g *Godville) Info(ctx context.Context) (*Info, error) {
 		GoldApprox: info.GoldApprox,
 		Quest:      info.Quest,
 	}, nil
+}
+
+func pluralForm(lang language.Tag, one, few, other string, val int) string {
+	_ = message.Set(
+		lang,
+		"%d",
+		plural.Selectf(1, "%d", plural.One, one, plural.Few, few, plural.Other, other),
+	)
+	p := message.NewPrinter(lang)
+	return p.Sprintf("%d", val)
 }
