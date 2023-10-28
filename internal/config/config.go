@@ -9,9 +9,12 @@ type Config struct {
 	GodvilleGodname string
 	GodvilleToken   string
 
-	MastodonServer string
-	MastodonID     string
-	MastodonSecret string
+	MastodonServer      string
+	MastodonID          string
+	MastodonSecret      string
+	MastodonAccessToken string
+	MastodonEmail       string
+	MastodonPassword    string
 }
 
 func Load() (*Config, error) {
@@ -28,9 +31,12 @@ func Load() (*Config, error) {
 	mastodonServer := os.Getenv("MASTODON_SERVER")
 	mastodonID := os.Getenv("MASTODON_ID")
 	mastodonSecret := os.Getenv("MASTODON_SECRET")
+	mastodonAccessToken := os.Getenv("MASTODON_ACCESS_TOKEN")
+	mastodonEmail := os.Getenv("MASTODON_EMAIL")
+	mastodonPassword := os.Getenv("MASTODON_PASSWORD")
 
-	if mastodonServer != "" && (mastodonID == "" || mastodonSecret == "") {
-		return nil, errors.New("MASTODON_ID and MASTODON_SECRET must be set if MASTODON_SERVER is set")
+	if mastodonServer != "" && (mastodonID == "" || mastodonSecret == "" || mastodonEmail == "" || mastodonPassword == "" || mastodonAccessToken == "") {
+		return nil, errors.New("MASTODON_ID, MASTODON_SECRET, MASTODON_ACCESS_TOKEN, MASTODON_EMAIL and MASTODON_PASSWORD must be set if MASTODON_SERVER is set")
 	}
 
 	// return error if no publishers are configured
@@ -42,8 +48,11 @@ func Load() (*Config, error) {
 		GodvilleGodname: godvilleGodname,
 		GodvilleToken:   godvilleToken,
 
-		MastodonServer: mastodonServer,
-		MastodonID:     mastodonID,
-		MastodonSecret: mastodonSecret,
+		MastodonServer:      mastodonServer,
+		MastodonID:          mastodonID,
+		MastodonSecret:      mastodonSecret,
+		MastodonAccessToken: mastodonAccessToken,
+		MastodonEmail:       mastodonEmail,
+		MastodonPassword:    mastodonPassword,
 	}, nil
 }
