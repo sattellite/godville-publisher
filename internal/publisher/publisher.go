@@ -1,6 +1,9 @@
 package publisher
 
+import "context"
+
 type Publisher interface {
-	SendMessage(string) error
-	UpdateStatus(string) error
+	SendMessage(context.Context, string) error
+	SendMessageWithoutDuplicate(context.Context, string) error
+	UpdateStatus(context.Context, string) error
 }
