@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -147,8 +148,8 @@ func TestLoad(t *testing.T) {
 	for _, tt := range tests {
 		localtt := tt
 		t.Run(tt.name, func(t *testing.T) {
-
 			// set environment variables for this test
+			os.Clearenv()
 			for k, v := range localtt.environment {
 				t.Setenv(k, v)
 			}
