@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/sattellite/godville-publisher/internal/godville"
+
 	strip "github.com/grokify/html-strip-tags-go"
 	"github.com/mattn/go-mastodon"
 )
@@ -72,5 +74,24 @@ func (m *Mastodon) SendMessageWithoutDuplicate(ctx context.Context, message stri
 }
 
 func (m *Mastodon) UpdateProfile(ctx context.Context, info *godville.Info) error {
-	return nil
+	loc := info.TownName
+	if loc == "" {
+		loc = info.Location
+	}
+	fields := []mastodon.Field{
+		{Name: "Здоровье", Value: fmt.Sprintf("%d/%d", info.Health, info.MaxHealth)},
+		{Name: "Квест", Value: info.Quest},
+		{Name: "Местоположение", Value: loc},
+		{Name: "Характер", Value: info.Alignment},
+	}
+
+	note := fmt.Sprintf(`Меня постоянно шпуняет мой главный бог %s. В печёнках уже сидит.
+Еще и сюда обязал отправлять записи из дневника.
+Его профиль в Годвиле, я туда чаще пишу по привычке: https://godville.net/gods/%s`, info.Godname, info.Godname)
+
+	_, err := m.client.AccountUpdate(ctx, &mastodon.Profile{
+		Note:   &note,
+		Fields: &fields,
+	})
+	return err
 }
