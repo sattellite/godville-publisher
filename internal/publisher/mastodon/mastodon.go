@@ -2,6 +2,7 @@ package mastodon
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/mattn/go-mastodon"
 )
@@ -24,7 +25,12 @@ func New(config *Config) (*Mastodon, error) {
 	})
 	err := c.Authenticate(context.Background(), config.MastodonEmail, config.MastodonPassword)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed authenticate: %+w", err)
+	}
+
+	_, accErr := c.GetAccountCurrentUser(context.Background())
+	if accErr != nil {
+		return nil, fmt.Errorf("failed get account info: %+w", accErr)
 	}
 	return &Mastodon{
 		client: c,
