@@ -41,7 +41,14 @@ type Mastodon struct {
 	client *mastodon.Client
 }
 
-func (m *Mastodon) SendMessage(string) error {
+func (m *Mastodon) SendMessage(ctx context.Context, message string) error {
+	_, err := m.client.PostStatus(ctx, &mastodon.Toot{
+		Status:   message,
+		Language: "ru",
+	})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
