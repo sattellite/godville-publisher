@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	strip "github.com/grokify/html-strip-tags-go"
-
 	"github.com/mattn/go-mastodon"
 )
 
@@ -72,6 +71,6 @@ func (m *Mastodon) SendMessageWithoutDuplicate(ctx context.Context, message stri
 	return fmt.Errorf("have same message already")
 }
 
-func (m *Mastodon) UpdateStatus(context.Context, string) error {
+func (m *Mastodon) UpdateProfile(ctx context.Context, info *godville.Info) error {
 	return nil
 }
