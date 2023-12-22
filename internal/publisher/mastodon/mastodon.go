@@ -65,7 +65,7 @@ func (m *Mastodon) SendMessageWithoutDuplicate(ctx context.Context, message stri
 		return err
 	}
 	// if no statuses or last status message does not equal with new message
-	if len(c) != 0 || strip.StripTags(c[0].Content) != message {
+	if len(c) == 0 || strip.StripTags(c[0].Content) != message {
 		return m.SendMessage(ctx, message)
 	}
 
