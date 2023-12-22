@@ -19,7 +19,7 @@ func main() {
 
 	cfg, cfgErr := config.Load()
 	if cfgErr != nil {
-		panic(cfgErr)
+		log.Fatalln(cfgErr)
 	}
 
 	ctx := context.Background()
@@ -33,13 +33,13 @@ func main() {
 		MastodonPassword:    cfg.MastodonPassword,
 	})
 	if pErr != nil {
-		panic(pErr)
+		log.Fatalln(pErr)
 	}
 
 	game := godville.New(cfg.GodvilleGodname, cfg.GodvilleToken)
 	info, err := game.Info(ctx)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
 	if isSendMessage {
