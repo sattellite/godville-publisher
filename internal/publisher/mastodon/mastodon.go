@@ -26,10 +26,6 @@ func New(config *Config) (*Mastodon, error) {
 		ClientSecret: config.MastodonSecret,
 		AccessToken:  config.MastodonAccessToken,
 	})
-	err := c.Authenticate(context.Background(), config.MastodonEmail, config.MastodonPassword)
-	if err != nil {
-		return nil, fmt.Errorf("failed authenticate: %+w", err)
-	}
 
 	acc, accErr := c.GetAccountCurrentUser(context.Background())
 	if accErr != nil {
