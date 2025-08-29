@@ -37,8 +37,8 @@ func Load() (*Config, error) {
 	mastodonEmail := os.Getenv("MASTODON_EMAIL")
 	mastodonPassword := os.Getenv("MASTODON_PASSWORD")
 
-	if mastodonServer != "" && (mastodonID == "" || mastodonSecret == "" || mastodonEmail == "" || mastodonPassword == "" || mastodonAccessToken == "") {
-		return nil, errors.New("MASTODON_ID, MASTODON_SECRET, MASTODON_ACCESS_TOKEN, MASTODON_EMAIL and MASTODON_PASSWORD must be set if MASTODON_SERVER is set")
+	if mastodonServer != "" && (mastodonID == "" || mastodonSecret == "" || mastodonAccessToken == "") {
+		return nil, errors.New("MASTODON_ID, MASTODON_SECRET and MASTODON_ACCESS_TOKEN must be set if MASTODON_SERVER is set")
 	}
 
 	// return error if no publishers are configured
