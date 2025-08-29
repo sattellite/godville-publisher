@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	GodvilleGodname string
-	GodvilleToken   string
+	GodvilleGodname   string
+	GodvilleToken     string
+	GodvilleWithProxy bool
 
 	MastodonServer      string
 	MastodonID          string
@@ -26,6 +27,7 @@ func Load() (*Config, error) {
 	if godvilleToken == "" {
 		return nil, errors.New("GODVILLE_TOKEN is not set")
 	}
+	withProxy := os.Getenv("GODVILLE_PROXY") != ""
 
 	// get mastodon config
 	mastodonServer := os.Getenv("MASTODON_SERVER")
@@ -45,8 +47,9 @@ func Load() (*Config, error) {
 	}
 
 	return &Config{
-		GodvilleGodname: godvilleGodname,
-		GodvilleToken:   godvilleToken,
+		GodvilleGodname:   godvilleGodname,
+		GodvilleToken:     godvilleToken,
+		GodvilleWithProxy: withProxy,
 
 		MastodonServer:      mastodonServer,
 		MastodonID:          mastodonID,

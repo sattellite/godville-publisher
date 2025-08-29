@@ -36,7 +36,7 @@ func main() {
 		log.Fatalln(pErr)
 	}
 
-	game := godville.New(cfg.GodvilleGodname, cfg.GodvilleToken)
+	game := godville.New(cfg.GodvilleGodname, cfg.GodvilleToken, cfg.GodvilleWithProxy)
 	info, err := game.Info(ctx)
 	if err != nil {
 		log.Fatalln(err)

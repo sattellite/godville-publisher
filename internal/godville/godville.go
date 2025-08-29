@@ -14,8 +14,9 @@ import (
 )
 
 type Godville struct {
-	godname string
-	token   string
+	godname   string
+	token     string
+	withProxy bool
 }
 
 type apiInfo struct {
@@ -78,10 +79,11 @@ type Info struct {
 	Quest      string
 }
 
-func New(godname, token string) *Godville {
+func New(godname, token string, withProxy bool) *Godville {
 	return &Godville{
-		godname: godname,
-		token:   token,
+		godname:   godname,
+		token:     token,
+		withProxy: withProxy,
 	}
 }
 
