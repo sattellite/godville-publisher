@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/sattellite/godville-publisher/internal/client"
 	"golang.org/x/text/feature/plural"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
@@ -98,7 +99,7 @@ func (g *Godville) Info(ctx context.Context) (*Info, error) {
 		return nil, fmt.Errorf("failed to create request: %w", reqErr)
 	}
 
-	resp, getErr := http.DefaultClient.Do(req)
+	resp, getErr := client.HTTP(g.withProxy).Do(req)
 	if getErr != nil {
 		return nil, getErr
 	}
